@@ -4,6 +4,8 @@ namespace Lauthz\Tests;
 
 use Enforcer;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Casbin\Persist\Adapters\Filter;
+use Lauthz\Models\Rule;
 
 class DatabaseAdapterTest extends TestCase
 {
@@ -18,6 +20,41 @@ class DatabaseAdapterTest extends TestCase
 
         $this->assertTrue(Enforcer::enforce('alice', 'data2', 'read'));
         $this->assertTrue(Enforcer::enforce('alice', 'data2', 'write'));
+    }
+
+    public function testLoadFilteredPolicy()
+    {
+        $this->initTable();
+        Enforcer::clearPolicy();
+        $this->initConfig();
+        $adapter = Enforcer::getAdapter();
+        $adapter->setFiltered(true);
+        $this->assertEquals([], Enforcer::getPolicy());
+
+        // string
+        $filter = "v0 = bob";
+        Enforcer::loadFilteredPolicy($filter);
+        $this->assertEquals([
+            ['bob', 'data2', 'write']
+        ], Enforcer::getPolicy());
+        
+        // Filter
+        $filter = new Filter(['v2'], ['read']);
+        Enforcer::loadFilteredPolicy($filter);
+        $this->assertEquals([
+            ['alice', 'data1', 'read'],
+            ['data2_admin', 'data2', 'read'],
+        ], Enforcer::getPolicy());
+
+        // Closure
+        Enforcer::loadFilteredPolicy(function (Rule &$rule) {
+            # return $rule->where('v1', 'data1');
+            $rule = $rule->where('v1', 'data1');
+        });
+
+        $this->assertEquals([
+            ['alice', 'data1', 'read'],
+        ], Enforcer::getPolicy());
     }
 
     public function testAddPolicy()
