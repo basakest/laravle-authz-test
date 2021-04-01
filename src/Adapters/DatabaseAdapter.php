@@ -252,7 +252,7 @@ class DatabaseAdapter implements DatabaseAdapterContract, BatchDatabaseAdapterCo
         $instance = $this->eloquent;
 
         if (is_string($filter)) {
-            $instance->whereRaw($filter);
+            $instance = $instance->whereRaw($filter);
         } else if ($filter instanceof Filter) {
             foreach($filter->p as $k => $v) {
                 $where[$v] = $filter->g[$k];
