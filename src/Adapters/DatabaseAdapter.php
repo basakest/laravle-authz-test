@@ -260,7 +260,7 @@ class DatabaseAdapter implements DatabaseAdapterContract, BatchDatabaseAdapterCo
             }
         } else if ($filter instanceof Closure) {
             //$filter($instance);
-            $instance->where($filter);
+            $instance = $instance->where($filter);
         } else {
             throw new \Exception('invalid filter type');
         }
