@@ -32,7 +32,7 @@ class DatabaseAdapterTest extends TestCase
         $this->assertEquals([], Enforcer::getPolicy());
 
         // string
-        $filter = "v0 = bob";
+        $filter = "v0 = 'bob'";
         Enforcer::loadFilteredPolicy($filter);
         $this->assertEquals([
             ['bob', 'data2', 'write']
