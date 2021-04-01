@@ -252,17 +252,14 @@ class DatabaseAdapter implements DatabaseAdapterContract, BatchDatabaseAdapterCo
         $instance = $this->eloquent;
 
         if (is_string($filter)) {
-            $filter = str_replace(' ', '', $filter);
-            $filter = explode('=', $filter);
-            $instance = $instance->where($filter[0], $filter[1]);
+            $instance->whereRaw($filter);
         } else if ($filter instanceof Filter) {
             foreach($filter->p as $k => $v) {
                 $where[$v] = $filter->g[$k];
                 $instance = $instance->where($v, $filter->g[$k]);
             }
         } else if ($filter instanceof Closure) {
-            # $instance = $filter($instance);
-            $filter($instance);
+            $instance->where($filter);
         } else {
             throw new \Exception('invalid filter type');
         }

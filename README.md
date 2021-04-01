@@ -23,6 +23,7 @@
         <img src="https://poser.pugx.org/casbin/laravel-authz/license" alt="License">
     </a>
 </p>
+[Chinese Version](https://github.com/php-casbin/laravel-authz/blob/master/README_CN.md)
 
 It's based on [Casbin](https://github.com/php-casbin/php-casbin), an authorization library that supports access control models like ACL, RBAC, ABAC.
 

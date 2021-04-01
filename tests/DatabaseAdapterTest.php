@@ -47,9 +47,8 @@ class DatabaseAdapterTest extends TestCase
         ], Enforcer::getPolicy());
 
         // Closure
-        Enforcer::loadFilteredPolicy(function (Rule &$rule) {
-            # return $rule->where('v1', 'data1');
-            $rule = $rule->where('v1', 'data1');
+        Enforcer::loadFilteredPolicy(function () {
+            $query->where('v1', 'data1');
         });
 
         $this->assertEquals([
