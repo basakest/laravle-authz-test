@@ -47,7 +47,7 @@ class DatabaseAdapterTest extends TestCase
         ], Enforcer::getPolicy());
 
         // Closure
-        Enforcer::loadFilteredPolicy(function (&$query) {
+        Enforcer::loadFilteredPolicy(function (g$query) {
             $query->where('v1', 'data1');
         });
 
